@@ -1,0 +1,65 @@
++-----------------------------------------------------------------------------+
+|                  Growing and shrinking DictEntries                          |
++-----------------------------------------------------------------------------+
+a) The rule for growing the number of DictEntries is: 
+   You can modify this if you change the rule.
+
+   When to grow: What is the condition that triggers a grow?
+
+	Adding a new (key,value) pair to a full row (capacity==numEntries)
+	
+   How to grow: Do you double the number of entries, add 10 more entries?
+
+	capacity = 2*capacity
+
+   Justification for above: Argue why this is the right thing to do.
+
+	Expanding in this way leads to amortized constant cost/entry
+	when we are expanding only.
+
+b) The rule for shrinking the number of DictEntries is:
+
+   When to shrink: What is the condition that triggers a shrink?
+
+   	The shrink is triggered when the number of entries in a row is less than half of the capacity. 
+
+   How to shrink: Do you cut the number of entries in half, subtract 10?
+
+   	The number of entries is cut in half.
+
+   Justification for above: Argue why this is the right thing to do.
+
+   	As a dictionary's size is doubled whenever it becomes full, it is convenient to follow the same logic and update the capacity to its previous value by halving the capacity whenever it's possible.
+
++-----------------------------------------------------------------------------+
+|                  Growing and shrinking DictRows                             |
++-----------------------------------------------------------------------------+
+a) The rule for growing the number of DictRows is:
+
+   When to grow: What is the condition that triggers a grow?
+
+   	If there is 100 entries in one row, that grows the number of DictRows.
+
+   How to grow: Do you double the number of rows, add 10 more rows?
+
+   	The number of rows is doubled as given by ROW_GROWTH_FACTOR.
+
+   Justification for above: Argue why this is the right thing to do.
+
+   	When a dictionary's number of entries grows significantly, accessing a specific key can become highly complex. To mitigate this, limiting the number of entries in a single row of the dictionary to 100 could be a reasonable approach. This ensures that the function remains efficient even for larger inputs.  
+
+b) The rule for shrinking the number of DictRows is:
+
+   When to shrink: What is the condition that triggers a shrink?
+
+   	When the amount of empty rows is greater than half of the total number of rows.
+
+   How to shrink: Do you cut the number of rows in half, subtract 10?
+
+   	The number of rows is cut in half.
+
+   Justification for above: Argue why this is the right thing to do.
+
+   	The reasoning for shrinking is similar to that for growth. When the dictionary is expanded, its rows are multiplied by a factor of 2. Similarly, whenever it becomes feasible to eliminate half of the rows, the number of rows is reduced by half.
+
+
